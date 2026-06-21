@@ -190,15 +190,23 @@ Cell F4: <span class="syntax-op">=</span>E4<span class="syntax-op">-</span>SUMIF
     const html = `
       <div class="label">The agent-optimized stack</div>
       <div class="code-block good">
-        <pre><span class="syntax-cmt">┌─────────────────────────┐</span>
-<span class="syntax-cmt">│  Data: CSV / Parquet    │</span>  ← Plain text, any tool can read
-<span class="syntax-cmt">├─────────────────────────┤</span>
-<span class="syntax-cmt">│  Transform: SQL / Python │</span>  ← Explicit, testable, composable
-<span class="syntax-cmt">├─────────────────────────┤</span>
-<span class="syntax-cmt">│  Present: Dashboard / NB │</span>  ← Separate rendering layer
-<span class="syntax-cmt">└─────────────────────────┘</span>
-
-<span class="syntax-cmt"># Bonus: export .xlsx as final step only</span>
+        <ul style="list-style:none;padding:0;margin:0;font-family:var(--font-mono);font-size:0.82rem;">
+          <li style="padding:10px 0;border-bottom:1px solid var(--border);">
+            <strong style="color:var(--accent);">📄 Data</strong> — CSV, JSON, Parquet<br>
+            <span style="color:var(--text-muted);font-size:0.72rem;">Plain text, any tool can read</span>
+          </li>
+          <li style="padding:10px 0;border-bottom:1px solid var(--border);">
+            <strong style="color:var(--accent);">⚙️ Transform</strong> — SQL, Python, pandas<br>
+            <span style="color:var(--text-muted);font-size:0.72rem;">Explicit, testable, composable</span>
+          </li>
+          <li style="padding:10px 0;">
+            <strong style="color:var(--accent);">📊 Present</strong> — Notebooks, dashboards, charts<br>
+            <span style="color:var(--text-muted);font-size:0.72rem;">Separate rendering layer</span>
+          </li>
+        </ul>
+      </div>
+      <div class="code-block good" style="margin-top:12px;">
+        <pre><span class="syntax-cmt"># Export .xlsx as final step only</span>
 df.to_excel(<span class="syntax-str">'report_for_boss.xlsx'</span>)</pre>
       </div>
       <div class="caption">Keep Excel as an output format, not a working medium.</div>
