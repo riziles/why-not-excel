@@ -41,13 +41,13 @@
       <div class="scene-visual"></div>
     </section>
 
-    <!-- Scene 2: Binary Black Box -->
+    <!-- Scene 2: No Structural Contract -->
     <section class="scene" id="scene-binary" data-scene="binary">
       <div class="narrative-block">
-        <h2>1. The binary black box</h2>
-        <p>An <code>.xlsx</code> file is a ZIP archive of XML documents. To read it, an agent needs a specialized parsing library — and every read/write cycle round-trips through that parser.</p>
-        <p>A <code>.csv</code> file is plain text. Any tool, any language, any agent can read it directly. No library required. No format reverse-engineering. Just data.</p>
-        <p>When your source of truth is plain text, an agent can <em>see</em> the data. When it's binary, the agent is working through a fogged window.</p>
+        <h2>1. No structural contract</h2>
+        <p>Binary formats aren't the enemy — Parquet, Arrow, and SQLite are binary, and agents work with them effortlessly. The problem is that Excel has <strong>no schema, no contract, no guarantees</strong> about what's inside.</p>
+        <p>Is row 3 a header? Are columns B through D merged? Is that number a raw value or the result of a formula that references a hidden sheet? The agent has to <em>discover</em> the structure through trial and error — every single time.</p>
+        <p>A Parquet file declares its columns, types, and statistics in a footer. A CSV file is plain text with a simple convention. An Excel file is a ZIP of XML where data, formatting, formulas, and layout are <strong>interleaved</strong> with no separation of concerns.</p>
       </div>
       <div class="scene-visual"></div>
     </section>

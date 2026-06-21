@@ -74,18 +74,30 @@ sheet = wb[<span class="syntax-str">'Sheet1'</span>]
 
   binary: () => {
     const html = `
-      <div class="label">Plain text → instant access</div>
+      <div class="label">Binary ≠ bad. No contract = bad.</div>
       <div class="code-block good">
-        <pre><span class="syntax-cmt"># Any tool can read this:</span>
-date,region,product_id,units_sold,revenue,cost
-2024-01-15,North,P001,120,3600.00,1800.00
-2024-01-15,South,P002,85,2975.00,1360.00</pre>
+        <pre><span class="syntax-cmt"># Parquet: binary, but fully self-describing</span>
+<span class="syntax-kw">import</span> pyarrow.parquet <span class="syntax-kw">as</span> pq
+table = pq.read_table(<span class="syntax-str">'sales.parquet'</span>)
+<span class="syntax-fn">print</span>(table.schema)  <span class="syntax-cmt"># columns + types, no guessing</span>
+
+<span class="syntax-cmt"># CSV: plain text, universal</span>
+<span class="syntax-kw">import</span> pandas <span class="syntax-kw">as</span> pd
+df = pd.read_csv(<span class="syntax-str">'sales.csv'</span>)
+<span class="syntax-cmt"># Any tool can read it. No parser fights.</span></pre>
       </div>
-      <div class="label" style="margin-top:18px;">Binary blob → opaque</div>
+      <div class="label" style="margin-top:18px;">Excel: data + formatting + formulas, all interleaved</div>
       <div class="code-block bad">
-        <pre>PK\u0003\u0004\u0014\u0006\b\b\b!ýM^[ÿÿÿÿ...  <span class="syntax-cmt">← .xlsx is a ZIP of XML</span></pre>
+        <pre><span class="syntax-cmt">&lt;!-- Inside sales.xlsx (xl/worksheets/sheet1.xml) --&gt;</span>
+&lt;sheetData&gt;
+  <span class="syntax-cmt">&lt;!-- Are these headers or data? --&gt;</span>
+  &lt;row r="1"&gt;...&lt;c r="A1" t="s"&gt;&lt;v&gt;0&lt;/v&gt;&lt;/c&gt;...&lt;/row&gt;
+  <span class="syntax-cmt">&lt;!-- Formula or value? Check &lt;f&gt; tags --&gt;</span>
+  &lt;row r="2"&gt;...&lt;c r="C2"&gt;&lt;f&gt;VLOOKUP(A2,...)&lt;/f&gt;&lt;/c&gt;...&lt;/row&gt;
+  <span class="syntax-cmt">&lt;!-- Merged? Check mergeCells.xml --&gt;</span>
+&lt;/sheetData&gt;</pre>
       </div>
-      <div class="caption">One is data. The other is a format you fight.</div>
+      <div class="caption">A Parquet file declares its structure. An Excel file makes you hunt for it across multiple XML files.</div>
     `;
     updateVisuals('binary', html);
   },
@@ -306,7 +318,7 @@ result.to_parquet(<span class="syntax-str">'out.parquet'</span>) <span class="sy
 const sceneLabels = {
   hero: 'Why Not Excel?',
   era: 'The Agent Era',
-  binary: 'Binary Black Box',
+  binary: 'No Structural Contract',
   schema: 'Schema by Accident',
   gui: 'GUI-First Design',
   positional: 'Positional Fragility',
