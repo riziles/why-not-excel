@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Playground — Why Not Excel?</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🐍</text></svg>" />
+  <link rel="stylesheet" href="/src/playground.css" />
+</head>
+<body>
+  <header class="pg-header">
+    <a href="./" class="pg-back">← Back to presentation</a>
+    <div class="pg-brand">
+      <span class="pg-logo">🐍</span>
+      <h1>Python + pandas Playground</h1>
+    </div>
+    <p class="pg-subtitle">Pyodide runs a full Python 3 interpreter with pandas in your browser via WebAssembly.</p>
+    <div class="pg-schema">
+      <span>Available: <code>pandas</code> · CSV files at <code>/why-not-excel/data/</code></span>
+      <span class="pg-schema-hint">First load downloads ~12MB Python environment</span>
+    </div>
+  </header>
+
+  <main class="pg-main">
+    <section class="pg-presets" id="py-presets">
+      <button data-preset="revenue-region">Revenue & profit by region</button>
+      <button data-preset="yoy-pivot">Year-over-year pivot table</button>
+      <button data-preset="top-transactions">Top 10 transactions by profit</button>
+      <button data-preset="schema-explore">Data exploration (schema)</button>
+    </section>
+
+    <section class="pg-editor-area">
+      <div class="pg-editor-header">
+        <label for="py-input">Python Code</label>
+        <span class="pg-hint">Ctrl+Enter to run</span>
+      </div>
+      <textarea id="py-input" class="pg-editor" spellcheck="false"></textarea>
+      <button id="py-run-btn" class="pg-run-btn">▶ Run Python</button>
+    </section>
+
+    <section id="py-output" class="pg-output">
+      <div class="pg-loading">Initializing Pyodide (Python + pandas)…</div>
+    </section>
+  </main>
+
+  <script type="module" src="/src/python.js"></script>
+</body>
+</html>

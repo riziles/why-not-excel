@@ -102,16 +102,7 @@
       <div class="narrative-block">
         <h2>Try it yourself: SQL that survives change</h2>
         <p>This DuckDB instance is running entirely in your browser — no server, no installation. The <code>sales</code> and <code>products</code> tables were loaded from the same CSV files in this repo.</p>
-        <p>The panel on the right is a live query editor. Try joining the two tables, filtering by region, or aggregating by category. Then imagine doing the equivalent with VLOOKUPs across sheets.</p>
-        <div class="playground-controls">
-          <select id="query-preset" aria-label="Example queries">
-            <option value="">— Example queries —</option>
-            <option value="SELECT * FROM sales LIMIT 5">Preview sales data</option>
-            <option value="SELECT region, SUM(revenue) AS total_revenue, SUM(revenue - cost) AS profit&#10;FROM sales&#10;GROUP BY region&#10;ORDER BY profit DESC">Revenue &amp; profit by region</option>
-            <option value="SELECT p.product_name, p.category, SUM(s.units_sold) AS total_units, SUM(s.revenue) AS total_revenue&#10;FROM sales s&#10;JOIN products p ON s.product_id = p.product_id&#10;GROUP BY p.product_name, p.category&#10;ORDER BY total_revenue DESC">Sales by product (JOIN)</option>
-            <option value="SELECT strftime('%Y', date) AS year, category, SUM(revenue) AS revenue&#10;FROM sales s&#10;JOIN products p ON s.product_id = p.product_id&#10;GROUP BY year, category&#10;ORDER BY year, revenue DESC">Year-over-year by category</option>
-          </select>
-        </div>
+        <p>Click the button to open a dedicated full-screen SQL playground. Try joining tables, filtering by region, or aggregating by category. Then imagine doing the equivalent with VLOOKUPs across sheets.</p>
       </div>
     </section>
 

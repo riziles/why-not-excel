@@ -1,7 +1,5 @@
 import './styles.css';
 import { ScrollStory } from './scrollytelling.js';
-import { initDuckDB, runQuery, resultsToTable, getExampleQueries } from './demos/duckdb-demo.js';
-import { initPyodide, runPython, getPyodideExample } from './demos/pyodide-demo.js';
 
 // ===== Visual Panel Content =====
 const visualContent = document.getElementById('visual-content');
@@ -182,112 +180,31 @@ df.to_excel(<span class="syntax-str">'report_for_boss.xlsx'</span>)</pre>
   },
 
   playground: () => {
-    // Build the interactive SQL playground
-    const examples = getExampleQueries();
-    const defaultSQL = examples[0].sql;
-
     setVisual(`
-      <div class="label">DuckDB-WASM — running in your browser</div>
-      <textarea class="sql-editor" id="sql-input" spellcheck="false">${escapeHtml(defaultSQL)}</textarea>
-      <button class="run-btn" id="sql-run-btn">▶ Run Query</button>
-      <div id="sql-output" class="output" style="margin-top:12px;">
-        <span class="loading">Initializing DuckDB...</span>
+      <div style="text-align:center; padding:30px 0;">
+        <div style="font-size:3.5rem; margin-bottom:16px;">🦆</div>
+        <p style="font-family:var(--font-sans); font-size:1rem; color:var(--text-muted); margin-bottom:20px;">
+          Run SQL queries against live data.<br />DuckDB-WASM — entirely in your browser.
+        </p>
+        <a href="./playground.html" class="run-btn pg-nav-btn" style="display:inline-block; text-decoration:none; padding:12px 32px; font-size:1rem;">
+          🦆 Open SQL Playground →
+        </a>
       </div>
     `);
-
-    // Wire up after DOM update
-    requestAnimationFrame(() => {
-      const textarea = document.getElementById('sql-input');
-      const runBtn = document.getElementById('sql-run-btn');
-      const output = document.getElementById('sql-output');
-      const presetSelect = document.getElementById('query-preset');
-
-      async function executeQuery(sql) {
-        output.innerHTML = '<span class="loading">Running...</span>';
-        try {
-          const { columns, rows } = await runQuery(sql);
-          output.innerHTML = resultsToTable(columns, rows);
-          output.className = 'output';
-        } catch (err) {
-          output.innerHTML = `<span class="error">${escapeHtml(err.message || String(err))}</span>`;
-          output.className = 'output error';
-        }
-      }
-
-      // Initialize DB and run default query
-      initDuckDB().then(() => {
-        output.innerHTML = '<span style="color:var(--green);">✓ DuckDB ready. Run a query to begin.</span>';
-      }).catch(err => {
-        output.innerHTML = `<span class="error">Init failed: ${escapeHtml(err.message || String(err))}</span>`;
-        output.className = 'output error';
-      });
-
-      runBtn.addEventListener('click', () => executeQuery(textarea.value));
-
-      // Ctrl+Enter / Cmd+Enter to run
-      textarea.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
-          executeQuery(textarea.value);
-        }
-      });
-
-      // Preset selector
-      if (presetSelect) {
-        presetSelect.addEventListener('change', () => {
-          if (presetSelect.value) {
-            textarea.value = presetSelect.value;
-            executeQuery(presetSelect.value);
-          }
-        });
-      }
-    });
   },
 
   pyodide: () => {
-    const exampleCode = getPyodideExample();
-
     setVisual(`
-      <div class="label">Pyodide — Python 3 + pandas in your browser</div>
-      <textarea class="sql-editor" id="py-input" spellcheck="false" style="min-height:200px;">${escapeHtml(exampleCode)}</textarea>
-      <button class="run-btn" id="py-run-btn">▶ Run Python</button>
-      <div id="py-output" class="output" style="margin-top:12px;">
-        <span class="loading">Loading Python environment...</span>
+      <div style="text-align:center; padding:30px 0;">
+        <div style="font-size:3.5rem; margin-bottom:16px;">🐍</div>
+        <p style="font-family:var(--font-sans); font-size:1rem; color:var(--text-muted); margin-bottom:20px;">
+          Python 3 + pandas in your browser.<br />Explicit data pipelines, zero hidden state.
+        </p>
+        <a href="./python.html" class="run-btn pg-nav-btn" style="display:inline-block; text-decoration:none; padding:12px 32px; font-size:1rem;">
+          🐍 Open Python Playground →
+        </a>
       </div>
     `);
-
-    requestAnimationFrame(() => {
-      const textarea = document.getElementById('py-input');
-      const runBtn = document.getElementById('py-run-btn');
-      const output = document.getElementById('py-output');
-
-      initPyodide().then(() => {
-        output.innerHTML = '<span style="color:var(--green);">✓ Python + pandas ready. Run the code to begin.</span>';
-      }).catch(err => {
-        output.innerHTML = `<span class="error">Init failed: ${escapeHtml(err.message || String(err))}</span>`;
-        output.className = 'output error';
-      });
-
-      runBtn.addEventListener('click', async () => {
-        output.innerHTML = '<span class="loading">Running Python...</span>';
-        output.className = 'output';
-        try {
-          const result = await runPython(textarea.value);
-          output.innerHTML = `<pre style="white-space:pre-wrap;margin:0;">${escapeHtml(result)}</pre>`;
-          output.className = 'output';
-        } catch (err) {
-          output.innerHTML = `<span class="error">${escapeHtml(err.message || String(err))}</span>`;
-          output.className = 'output error';
-        }
-      });
-
-      textarea.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-          e.preventDefault();
-          runBtn.click();
-        }
-      });
-    });
   },
 
   conclusion: () => {

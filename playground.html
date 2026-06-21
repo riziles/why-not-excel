@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DuckDB Playground — Why Not Excel?</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🦆</text></svg>" />
+  <link rel="stylesheet" href="/src/playground.css" />
+</head>
+<body>
+  <header class="pg-header">
+    <a href="./" class="pg-back">← Back to presentation</a>
+    <div class="pg-brand">
+      <span class="pg-logo">🦆</span>
+      <h1>DuckDB-WASM Playground</h1>
+    </div>
+    <p class="pg-subtitle">Run SQL against live data — entirely in your browser. No server, no install.</p>
+    <div class="pg-schema">
+      <span>Tables: <code>sales</code> (38 rows) · <code>products</code> (4 rows)</span>
+      <span class="pg-schema-hint">Click a preset or write your own query</span>
+    </div>
+  </header>
+
+  <main class="pg-main">
+    <section class="pg-presets" id="sql-presets">
+      <button data-preset="preview">Preview sales</button>
+      <button data-preset="revenue-region">Revenue by region</button>
+      <button data-preset="join-products">JOIN with products</button>
+      <button data-preset="yoy-category">Year-over-year</button>
+      <button data-preset="monthly-trend">Monthly trend</button>
+    </section>
+
+    <section class="pg-editor-area">
+      <div class="pg-editor-header">
+        <label for="sql-input">SQL Query</label>
+        <span class="pg-hint">Ctrl+Enter to run</span>
+      </div>
+      <textarea id="sql-input" class="pg-editor" spellcheck="false"></textarea>
+      <button id="sql-run-btn" class="pg-run-btn">▶ Run Query</button>
+    </section>
+
+    <section id="sql-output" class="pg-output">
+      <div class="pg-loading">Initializing DuckDB-WASM…</div>
+    </section>
+  </main>
+
+  <script type="module" src="/src/playground.js"></script>
+</body>
+</html>
