@@ -47,7 +47,7 @@ const sceneVisuals = {
         <div style="font-size:4rem; margin-bottom:16px;">📊</div>
         <p style="font-family:var(--font-sans); font-size:1.1rem; color:var(--text-muted);">
           750 million people use Excel.<br />
-          <strong style="color:var(--accent);">Almost none of them are agents.</strong>
+          <strong style="color:var(--accent);">They are probably wasting time.</strong>
         </p>
       </div>
     `;
