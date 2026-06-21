@@ -11,7 +11,7 @@
   "devDependencies": {
     "vite": "^6.0.0"
   },
-  "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+  "dependencies": {
+    "@duckdb/duckdb-wasm": "1.33.1-dev45.0"
   }
 }

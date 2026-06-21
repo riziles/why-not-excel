@@ -1,11 +1,25 @@
 /**
- * DuckDB-WASM interactive demo.
- * Loads DuckDB from CDN, registers CSV data, provides query interface.
+ * DuckDB-WASM demo — Vite-native import approach.
+ * Uses ?url imports for WASM and worker bundles as recommended by DuckDB docs.
  */
+import * as duckdb from '@duckdb/duckdb-wasm';
+import duckdb_wasm from '@duckdb/duckdb-wasm/dist/duckdb-mvp.wasm?url';
+import mvp_worker from '@duckdb/duckdb-wasm/dist/duckdb-browser-mvp.worker.js?url';
+import duckdb_wasm_eh from '@duckdb/duckdb-wasm/dist/duckdb-eh.wasm?url';
+import eh_worker from '@duckdb/duckdb-wasm/dist/duckdb-browser-eh.worker.js?url';
 
 import { assetPath } from '../utils.js';
 
-const DUCKDB_CDN = 'https://cdn.jsdelivr.net/npm/@duckdb/duckdb-wasm@1.29.0';
+const MANUAL_BUNDLES = {
+  mvp: {
+    mainModule: duckdb_wasm,
+    mainWorker: mvp_worker,
+  },
+  eh: {
+    mainModule: duckdb_wasm_eh,
+    mainWorker: eh_worker,
+  },
+};
 
 let db = null;
 let conn = null;
@@ -20,25 +34,11 @@ export async function initDuckDB() {
   if (initPromise) return initPromise;
 
   initPromise = (async () => {
-    // Dynamically import DuckDB ESM from CDN
-    const duckdb = await import(/* @vite-ignore */ `${DUCKDB_CDN}/dist/duckdb-eh.js`);
-
-    const JSDELIVR_BUNDLES = {
-      mvp: {
-        mainModule: `${DUCKDB_CDN}/dist/duckdb-mvp.wasm`,
-        mainWorker: `${DUCKDB_CDN}/dist/duckdb-browser-worker.js`,
-      },
-      eh: {
-        mainModule: `${DUCKDB_CDN}/dist/duckdb-eh.wasm`,
-        mainWorker: `${DUCKDB_CDN}/dist/duckdb-browser-worker.js`,
-      },
-    };
-
-    const bundle = await duckdb.selectBundle(JSDELIVR_BUNDLES);
+    const bundle = await duckdb.selectBundle(MANUAL_BUNDLES);
     const worker = new Worker(bundle.mainWorker);
     const logger = new duckdb.ConsoleLogger();
     db = new duckdb.AsyncDuckDB(logger, worker);
-    await db.instantiate(bundle.mainModule);
+    await db.instantiate(bundle.mainModule, bundle.pthreadWorker);
 
     conn = await db.connect();
 
@@ -56,7 +56,6 @@ export async function initDuckDB() {
 async function loadCSV(path, tableName) {
   const resp = await fetch(path);
   const text = await resp.text();
-  // DuckDB-WASM registerFileText + query approach
   await db.registerFileText(`${tableName}.csv`, text);
   await conn.query(`
     CREATE TABLE ${tableName} AS
@@ -70,7 +69,6 @@ async function loadCSV(path, tableName) {
 export async function runQuery(sql) {
   if (!initialized) await initDuckDB();
   const result = await conn.query(sql);
-  // Convert Arrow table to array of plain objects
   const columns = result.schema.fields.map(f => f.name);
   const rows = [];
   for (let i = 0; i < result.numRows; i++) {
@@ -110,7 +108,6 @@ export function resultsToTable(columns, rows) {
 function formatValue(val) {
   if (val === null || val === undefined) return '<em>NULL</em>';
   if (typeof val === 'number') {
-    // Check if it looks like a currency value
     if (val % 1 !== 0) return val.toFixed(2);
     return String(val);
   }
@@ -121,44 +118,4 @@ function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
-}
-
-/** Get example queries */
-export function getExampleQueries() {
-  return [
-    {
-      label: 'Preview sales',
-      sql: 'SELECT * FROM sales LIMIT 5',
-    },
-    {
-      label: 'Revenue by region',
-      sql: `SELECT region, SUM(revenue) AS total_revenue, SUM(revenue - cost) AS profit
-FROM sales
-GROUP BY region
-ORDER BY profit DESC`,
-    },
-    {
-      label: 'JOIN with products',
-      sql: `SELECT p.product_name, p.category, SUM(s.units_sold) AS units, SUM(s.revenue) AS revenue
-FROM sales s
-JOIN products p ON s.product_id = p.product_id
-GROUP BY p.product_name, p.category
-ORDER BY revenue DESC`,
-    },
-    {
-      label: 'Year-over-year by category',
-      sql: `SELECT strftime('%Y', date) AS year, category, SUM(revenue) AS revenue
-FROM sales s
-JOIN products p ON s.product_id = p.product_id
-GROUP BY year, category
-ORDER BY year, revenue DESC`,
-    },
-    {
-      label: 'Monthly trend',
-      sql: `SELECT strftime('%Y-%m', date) AS month, COUNT(*) AS transactions, SUM(revenue) AS total
-FROM sales
-GROUP BY month
-ORDER BY month`,
-    },
-  ];
 }
