@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Why Not Excel? — Rethinking spreadsheets for the agent era</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚠️</text></svg>" />
+</head>
+<body>
+  <!-- Progress bar -->
+  <div id="progress-bar"></div>
+
+  <!-- Scene navigation dots -->
+  <nav id="scene-nav" aria-label="Scene navigation"></nav>
+
+  <!-- Scrollable narrative column -->
+  <main id="narrative">
+
+    <!-- Scene 0: Hero -->
+    <section class="scene" id="scene-hero" data-scene="hero">
+      <div class="narrative-block">
+        <p class="overline">A Field Guide for the Agent Era</p>
+        <h1>Why Not Excel?</h1>
+        <p class="subtitle">Excel was built for humans clicking cells.<br />Agents read, write, and reason about structure.<br />These are fundamentally different modes of work.</p>
+        <p class="scroll-hint">Scroll to explore ↓</p>
+      </div>
+    </section>
+
+    <!-- Scene 1: The Agent Era -->
+    <section class="scene" id="scene-era" data-scene="era">
+      <div class="narrative-block">
+        <h2>The way we work has changed</h2>
+        <p>You now reach for an agent to analyze data, write transformations, and generate reports. But Excel — the tool that holds most of the world's business logic — was never designed for this.</p>
+        <p>An agent thrives on <strong>explicit structure</strong>. Excel thrives on <strong>flexible ambiguity</strong>. That gap isn't a minor annoyance — it's a fundamental impedance mismatch that turns your spreadsheet from an asset into a bottleneck.</p>
+        <p>Let's walk through exactly <em>why</em>, with code you can run right here in the browser.</p>
+      </div>
+    </section>
+
+    <!-- Scene 2: Binary Black Box -->
+    <section class="scene" id="scene-binary" data-scene="binary">
+      <div class="narrative-block">
+        <h2>1. The binary black box</h2>
+        <p>An <code>.xlsx</code> file is a ZIP archive of XML documents. To read it, an agent needs a specialized parsing library — and every read/write cycle round-trips through that parser.</p>
+        <p>A <code>.csv</code> file is plain text. Any tool, any language, any agent can read it directly. No library required. No format reverse-engineering. Just data.</p>
+        <p>When your source of truth is plain text, an agent can <em>see</em> the data. When it's binary, the agent is working through a fogged window.</p>
+      </div>
+    </section>
+
+    <!-- Scene 3: Schema by Accident -->
+    <section class="scene" id="scene-schema" data-scene="schema">
+      <div class="narrative-block">
+        <h2>2. Schema by accident</h2>
+        <p>Excel infers types from values. A column is "mostly numbers except row 47 has <code>N/A</code>." The agent has to discover this through trial and error rather than being told: <code>price: number | null</code>.</p>
+        <p>In a database or a typed DataFrame, the schema is explicit. The agent knows exactly what it's working with before it runs a single operation. Zero guesswork.</p>
+      </div>
+    </section>
+
+    <!-- Scene 4: GUI-First Design -->
+    <section class="scene" id="scene-gui" data-scene="gui">
+      <div class="narrative-block">
+        <h2>3. GUI-first, data-second</h2>
+        <p>Merged cells. Conditional formatting. Freeze panes. Pivot tables. Named ranges that may or may not exist. All of these encode <em>presentation</em> logic — visual layout for human eyes — interleaved with the actual data.</p>
+        <p>An agent has to untangle what's data from what's decoration. In code, data and presentation are separate layers by design. The agent only touches the data layer.</p>
+      </div>
+    </section>
+
+    <!-- Scene 5: Positional Fragility -->
+    <section class="scene" id="scene-positional" data-scene="positional">
+      <div class="narrative-block">
+        <h2>4. Positional fragility</h2>
+        <p><code>=VLOOKUP(A2, Sheet2!B:D, 3, FALSE)</code> breaks the moment someone inserts a column before D. The logic is coupled to <em>coordinates</em>, not <em>names</em>.</p>
+        <p>This is the same reason we moved from numbered registers to named variables in programming decades ago. An agent writing <code>JOIN ON product_id</code> doesn't care what column number anything is — the name is the contract.</p>
+      </div>
+    </section>
+
+    <!-- Scene 6: Stateful Computation -->
+    <section class="scene" id="scene-stateful" data-scene="stateful">
+      <div class="narrative-block">
+        <h2>5. Stateful, hidden computation</h2>
+        <p>Excel's reactive model means a formula's dependencies are implicit. Circular references, iterative calc, volatile functions like <code>RAND()</code> — the agent can't statically analyze a workbook. It has to <em>run</em> it.</p>
+        <p>A Python script or SQL query makes data flow explicit. Input → transform → output. Every step is visible, named, and composable. An agent can reason about the pipeline without executing it.</p>
+      </div>
+    </section>
+
+    <!-- Scene 7: The Better Way -->
+    <section class="scene" id="scene-better" data-scene="better">
+      <div class="narrative-block">
+        <h2>The better way</h2>
+        <p>The pattern is straightforward:</p>
+        <ul>
+          <li><strong>Store data</strong> in plain text — CSV, JSON, or Parquet</li>
+          <li><strong>Transform</strong> with code — SQL queries, Python/pandas, or your language of choice</li>
+          <li><strong>Visualize</strong> as a separate rendering layer — notebooks, dashboards, charts</li>
+        </ul>
+        <p>Each layer is independently readable, testable, and composable. An agent can work at any layer without untangling the others.</p>
+        <p>The scene on the right is a live DuckDB database running in your browser. Try the queries — they'll keep working when the data changes, because they reference <em>names</em>, not <em>positions</em>.</p>
+      </div>
+    </section>
+
+    <!-- Scene 8: DuckDB Playground -->
+    <section class="scene" id="scene-playground" data-scene="playground">
+      <div class="narrative-block">
+        <h2>Try it yourself: SQL that survives change</h2>
+        <p>This DuckDB instance is running entirely in your browser — no server, no installation. The <code>sales</code> and <code>products</code> tables were loaded from the same CSV files in this repo.</p>
+        <p>The panel on the right is a live query editor. Try joining the two tables, filtering by region, or aggregating by category. Then imagine doing the equivalent with VLOOKUPs across sheets.</p>
+        <div class="playground-controls">
+          <select id="query-preset" aria-label="Example queries">
+            <option value="">— Example queries —</option>
+            <option value="SELECT * FROM sales LIMIT 5">Preview sales data</option>
+            <option value="SELECT region, SUM(revenue) AS total_revenue, SUM(revenue - cost) AS profit&#10;FROM sales&#10;GROUP BY region&#10;ORDER BY profit DESC">Revenue &amp; profit by region</option>
+            <option value="SELECT p.product_name, p.category, SUM(s.units_sold) AS total_units, SUM(s.revenue) AS total_revenue&#10;FROM sales s&#10;JOIN products p ON s.product_id = p.product_id&#10;GROUP BY p.product_name, p.category&#10;ORDER BY total_revenue DESC">Sales by product (JOIN)</option>
+            <option value="SELECT strftime('%Y', date) AS year, category, SUM(revenue) AS revenue&#10;FROM sales s&#10;JOIN products p ON s.product_id = p.product_id&#10;GROUP BY year, category&#10;ORDER BY year, revenue DESC">Year-over-year by category</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Scene 9: Pyodide Demo -->
+    <section class="scene" id="scene-pyodide" data-scene="pyodide">
+      <div class="narrative-block">
+        <h2>Python in the browser: explicit pipelines</h2>
+        <p>Pyodide runs a full Python interpreter — with pandas — in your browser via WebAssembly. The code on the right reads the same CSV, builds a transformation pipeline, and outputs results.</p>
+        <p>Notice that every step is <em>explicit</em>: load → filter → group → aggregate → output. An agent can read this top to bottom and understand the entire data flow. No hidden formulas, no cell dependencies to trace.</p>
+      </div>
+    </section>
+
+    <!-- Scene 10: Conclusion -->
+    <section class="scene" id="scene-conclusion" data-scene="conclusion">
+      <div class="narrative-block">
+        <h2>Excel isn't the enemy</h2>
+        <p>Excel is a phenomenal tool for <em>humans exploring data interactively</em>. The problem arises when it becomes the <strong>persistence layer</strong> for business logic in an agent-driven workflow.</p>
+        <p>The fix isn't to stop using Excel entirely. It's to use it as an <strong>output format</strong> — generate the <code>.xlsx</code> at the end for stakeholders who need it. Keep your source of truth in plain text, your transformations in code, and your visualizations as a separate concern.</p>
+        <p class="closing">Your agents will thank you.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Fixed visual panel (right side on desktop, stacks below on mobile) -->
+  <aside id="visual-panel" aria-label="Code and demo panel">
+    <div id="visual-content"></div>
+  </aside>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

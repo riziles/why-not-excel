@@ -1,0 +1,5 @@
+product_id,product_name,category,unit_price,unit_cost
+P001,Widget Alpha,Widgets,30.00,15.00
+P002,Widget Beta,Widgets,35.00,16.00
+P003,Gizmo Pro,Gizmos,25.00,14.00
+P004,Gizmo Lite,Gizmos,50.00,20.00
