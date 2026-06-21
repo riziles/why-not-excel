@@ -46,12 +46,28 @@ export async function initPyodide() {
 
     pyodide.globals.set('_sales_csv', salesText);
     pyodide.globals.set('_products_csv', productsText);
-    pyodide.runPython(`
+
+    // Write CSV data into Pyodide's virtual filesystem at /data/
+    try {
+      pyodide.runPython(`
+import os, io, pandas as pd
+os.makedirs('/data', exist_ok=True)
+
+# Write files to virtual FS
 with open('/data/sales.csv', 'w') as f:
     f.write(_sales_csv)
 with open('/data/products.csv', 'w') as f:
     f.write(_products_csv)
-    `);
+
+# Verify files were written
+sales_check = pd.read_csv('/data/sales.csv')
+products_check = pd.read_csv('/data/products.csv')
+print(f"Loaded {len(sales_check)} sales rows, {len(products_check)} products")
+      `);
+    } catch (e) {
+      console.error('Pyodide FS write failed:', e);
+      throw new Error(`Pyodide filesystem error: ${e.message || e}`);
+    }
 
     initialized = true;
     return pyodide;
