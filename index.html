@@ -108,6 +108,24 @@
       <div class="scene-visual"></div>
     </section>
 
+    <!-- Scene 7b: The Python Data Stack -->
+    <section class="scene" id="scene-python-stack" data-scene="python-stack">
+      <div class="narrative-block">
+        <h2>The ecosystem that replaced Excel</h2>
+        <p>In 2007, Wes McKinney was a quant at AQR Capital Management. Complex models took 30 minutes to discuss — but <strong>months to implement</strong> in Excel and SQL. Frustrated, he built a tool to make data analysis fast and composable. That tool became <strong>pandas</strong>.</p>
+        <p>pandas didn't just make Python viable for finance — it sparked an ecosystem of composable tools, each doing one thing well:</p>
+        <ul>
+          <li><strong>NumPy</strong> — fast array math</li>
+          <li><strong>pandas</strong> — labeled DataFrames, joins, groupby</li>
+          <li><strong>Apache Arrow</strong> — zero-copy in-memory data (also McKinney)</li>
+          <li><strong>Polars</strong> — GPU-accelerated, lazy evaluation</li>
+          <li><strong>DuckDB</strong> — embedded SQL analytics engine</li>
+        </ul>
+        <p>The key insight: these tools are <em>composable</em>. CSV → pandas → Arrow → DuckDB. Each step is a plain-text artifact or an in-memory table. An agent can inspect, modify, or replace any link in the chain. The opposite of a monolithic <code>.xlsx</code>.</p>
+      </div>
+      <div class="scene-visual"></div>
+    </section>
+
     <!-- Scene 8: DuckDB Playground -->
     <section class="scene" id="scene-playground" data-scene="playground">
       <div class="narrative-block">

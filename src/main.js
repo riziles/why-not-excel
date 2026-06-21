@@ -214,6 +214,45 @@ df.to_excel(<span class="syntax-str">'report_for_boss.xlsx'</span>)</pre>
     updateVisuals('better', html);
   },
 
+  'python-stack': () => {
+    const html = `
+      <div class="label">Composable tools, not monolithic files</div>
+      <div class="code-block good">
+        <ul style="list-style:none;padding:0;margin:0;font-family:var(--font-mono);font-size:0.8rem;">
+          <li style="padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--accent);">①</span> <strong>NumPy</strong> — fast n-dimensional arrays
+          </li>
+          <li style="padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--accent);">②</span> <strong>pandas</strong> — labeled DataFrames, groupby, joins
+          </li>
+          <li style="padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--accent);">③</span> <strong>Arrow</strong> — zero-copy columnar format (also McKinney)
+          </li>
+          <li style="padding:8px 0;border-bottom:1px solid var(--border);">
+            <span style="color:var(--accent);">④</span> <strong>Polars</strong> — GPU-accelerated, lazy DataFrames
+          </li>
+          <li style="padding:8px 0;">
+            <span style="color:var(--accent);">⑤</span> <strong>DuckDB</strong> — embedded OLAP SQL engine
+          </li>
+        </ul>
+      </div>
+      <div class="code-block good" style="margin-top:12px;">
+        <pre><span class="syntax-cmt"># Each step is inspectable & composable</span>
+<span class="syntax-kw">import</span> pandas <span class="syntax-kw">as</span> pd
+<span class="syntax-kw">import</span> duckdb
+
+df = pd.read_csv(<span class="syntax-str">'sales.csv'</span>)      <span class="syntax-cmt"># ① pandas reads CSV</span>
+result = duckdb.sql(<span class="syntax-str">"""</span>
+<span class="syntax-str">  SELECT region, SUM(revenue)</span>
+<span class="syntax-str">  FROM df GROUP BY region</span>
+<span class="syntax-str">"""</span>).df()                        <span class="syntax-cmt"># ② DuckDB queries pandas</span>
+result.to_parquet(<span class="syntax-str">'out.parquet'</span>) <span class="syntax-cmt"># ③ Arrow-backed output</span></pre>
+      </div>
+      <div class="caption">Wes McKinney built pandas at AQR Capital because Excel took months to do what should take hours. The tools that followed made Python the default for data work.</div>
+    `;
+    updateVisuals('python-stack', html);
+  },
+
   playground: () => {
     const html = `
       <div style="text-align:center; padding:30px 0;">
@@ -273,6 +312,7 @@ const sceneLabels = {
   positional: 'Positional Fragility',
   stateful: 'Stateful Computation',
   better: 'The Better Way',
+  'python-stack': 'The Python Data Stack',
   playground: 'DuckDB Playground',
   pyodide: 'Python Playground',
   conclusion: 'Conclusion',
@@ -284,7 +324,7 @@ const story = new ScrollStory();
 const sceneIds = [
   'scene-hero', 'scene-era', 'scene-binary', 'scene-schema',
   'scene-gui', 'scene-positional', 'scene-stateful', 'scene-better',
-  'scene-playground', 'scene-pyodide', 'scene-conclusion',
+  'scene-python-stack', 'scene-playground', 'scene-pyodide', 'scene-conclusion',
 ];
 
 for (const id of sceneIds) {
