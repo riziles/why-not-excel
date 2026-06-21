@@ -1,6 +1,7 @@
 /**
  * Pyodide interactive demo.
  * Loads Pyodide from CDN, provides Python/pandas execution environment.
+ * CSV files are fetched and written into Pyodide's virtual filesystem at init time.
  */
 
 import { assetPath } from '../utils.js';
@@ -13,6 +14,7 @@ let initPromise = null;
 
 /**
  * Initialize Pyodide (lazy, called on first use).
+ * Loads pandas and writes CSV data into the virtual filesystem.
  */
 export async function initPyodide() {
   if (initialized) return pyodide;
@@ -35,6 +37,15 @@ export async function initPyodide() {
     // Load pandas
     await pyodide.loadPackage('pandas');
 
+    // Fetch CSV files and write them into Pyodide's virtual filesystem
+    const [salesText, productsText] = await Promise.all([
+      fetch(assetPath('/data/sales.csv')).then(r => r.text()),
+      fetch(assetPath('/data/products.csv')).then(r => r.text()),
+    ]);
+
+    pyodide.FS.writeFile('/data/sales.csv', salesText);
+    pyodide.FS.writeFile('/data/products.csv', productsText);
+
     initialized = true;
     return pyodide;
   })();
@@ -44,6 +55,7 @@ export async function initPyodide() {
 
 /**
  * Run Python code and capture stdout + return value.
+ * CSV files are already in Pyodide's virtual FS at /data/sales.csv and /data/products.csv.
  */
 export async function runPython(code) {
   if (!initialized) await initPyodide();
@@ -79,33 +91,4 @@ export async function runPython(code) {
   }
 
   return output;
-}
-
-/**
- * Get the standard example Python code for the demo.
- */
-export function getPyodideExample() {
-  return `import pandas as pd
-import json
-
-# Load the same CSV files DuckDB uses
-sales = pd.read_csv('${assetPath('/data/sales.csv')}')
-products = pd.read_csv('${assetPath('/data/products.csv')}')
-
-# Join — named columns, robust to reordering
-df = sales.merge(products, on='product_id')
-
-# Aggregate: revenue & profit by region
-result = df.groupby('region').agg(
-    total_revenue=('revenue', 'sum'),
-    total_cost=('cost', 'sum'),
-    units=('units_sold', 'sum')
-).reset_index()
-
-result['profit'] = result['total_revenue'] - result['total_cost']
-result = result.sort_values('profit', ascending=False)
-
-print(result.to_string(index=False))
-print(f"\\nRegions: {result['region'].nunique()}")
-print(f"Total profit: \u0024{result['profit'].sum():,.2f}")`;
 }

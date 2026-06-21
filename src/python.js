@@ -10,8 +10,8 @@ const presetButtons = document.querySelectorAll('#py-presets button[data-preset]
 const presets = {
   'revenue-region': `import pandas as pd
 
-sales = pd.read_csv('/why-not-excel/data/sales.csv')
-products = pd.read_csv('/why-not-excel/data/products.csv')
+sales = pd.read_csv('/data/sales.csv')
+products = pd.read_csv('/data/products.csv')
 
 # Join on named columns -- survives reordering
 df = sales.merge(products, on='product_id')
@@ -31,8 +31,8 @@ print(f"\\nTotal profit: \${result['profit'].sum():,.2f}")`,
 
   'yoy-pivot': `import pandas as pd
 
-sales = pd.read_csv('/why-not-excel/data/sales.csv')
-products = pd.read_csv('/why-not-excel/data/products.csv')
+sales = pd.read_csv('/data/sales.csv')
+products = pd.read_csv('/data/products.csv')
 
 df = sales.merge(products, on='product_id')
 
@@ -48,7 +48,7 @@ print(pivot.to_string())`,
 
   'top-transactions': `import pandas as pd
 
-sales = pd.read_csv('/why-not-excel/data/sales.csv')
+sales = pd.read_csv('/data/sales.csv')
 
 # Find top-performing transactions
 sales['profit'] = sales['revenue'] - sales['cost']
@@ -59,7 +59,7 @@ print(top[['date', 'region', 'product_id', 'revenue', 'profit', 'margin']].to_st
 
   'schema-explore': `import pandas as pd
 
-sales = pd.read_csv('/why-not-excel/data/sales.csv')
+sales = pd.read_csv('/data/sales.csv')
 
 # Explore: Excel would guess types -- pandas tells you
 print('Column types:')
