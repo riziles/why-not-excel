@@ -403,15 +403,7 @@ body {
   margin: 0;
 }
 
-/* ===== Scene Visibility Transitions ===== */
-.scene {
-  opacity: 0.3;
-  transition: opacity 0.5s ease;
-}
-
-.scene.active {
-  opacity: 1;
-}
+/* ===== Scene Visibility ===== */
 
 /* ===== Utility ===== */
 .sr-only {
