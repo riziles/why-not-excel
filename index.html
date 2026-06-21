@@ -98,11 +98,11 @@
         <h2>The better way</h2>
         <p>The pattern is straightforward:</p>
         <ul>
-          <li><strong>Store data</strong> in plain text — CSV, JSON, or Parquet</li>
-          <li><strong>Transform</strong> with code — SQL queries, Python/pandas, or your language of choice</li>
-          <li><strong>Visualize</strong> as a separate rendering layer — notebooks, dashboards, charts</li>
+          <li><strong>Separate data from logic</strong> — CSV, JSON, or Parquet files hold values only. No formulas, no formatting, no merged cells.</li>
+          <li><strong>Transform with code</strong> — SQL queries, Python/pandas, or your language of choice. Explicit, testable, composable pipelines.</li>
+          <li><strong>Visualize as a rendering layer</strong> — notebooks, dashboards, charts. Swap the viz without touching the data or the logic.</li>
         </ul>
-        <p>Each layer is independently readable, testable, and composable. An agent can work at any layer without untangling the others.</p>
+        <p>Each layer is independently readable, testable, and composable. An agent can work at any layer without untangling the others. Excel smears all three into one file — that's the bottleneck.</p>
         <p>The scene on the right is a live DuckDB database running in your browser. Try the queries — they'll keep working when the data changes, because they reference <em>names</em>, not <em>positions</em>.</p>
       </div>
       <div class="scene-visual"></div>
