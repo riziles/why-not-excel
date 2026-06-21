@@ -11,6 +11,7 @@ export default defineConfig({
         playground: resolve(__dirname, 'playground.html'),
         python: resolve(__dirname, 'python.html'),
         'getting-started': resolve(__dirname, 'getting-started.html'),
+        alternatives: resolve(__dirname, 'alternatives.html'),
       },
     },
   },

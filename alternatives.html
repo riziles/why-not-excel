@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>What if I don't like Python? — Why Not Excel?</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>❓</text></svg>" />
+  <link rel="stylesheet" href="/src/playground.css" />
+  <style>
+    .lang-section {
+      margin-bottom: 36px;
+    }
+    .lang-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .lang-section p {
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 16px;
+    }
+    .lang-section code {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+    }
+    .lang-card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .lang-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .lang-card h3 {
+      font-size: 1rem;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .lang-card .desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+      margin-bottom: 12px;
+    }
+    .lang-card pre {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      line-height: 1.55;
+      overflow-x: auto;
+      margin: 0;
+      color: var(--text);
+    }
+    .lang-card .libs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 10px;
+    }
+    .lang-card .lib {
+      display: inline-block;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.68rem;
+      color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+  <header class="pg-header">
+    <a href="./" class="pg-back">← Back to presentation</a>
+    <div class="pg-brand">
+      <span class="pg-logo">❓</span>
+      <h1>What if I don't like Python?</h1>
+    </div>
+    <p class="pg-subtitle">The pattern isn't about Python — it's about <strong>separating data from logic</strong>. That works in any language. Here's what <code>pd.read_csv()</code> + <code>groupby()</code> looks like everywhere else.</p>
+  </header>
+
+  <main class="pg-main">
+
+    <div class="lang-section">
+      <p>This presentation uses Python and DuckDB because they're the most common tools for data work. But the core insight — <strong>keep data in files, logic in code, and use version control</strong> — works in every language. If you're already comfortable with something else, start there. The agent will meet you where you are.</p>
+    </div>
+
+    <div class="lang-section">
+      <h2>Read a CSV, group by a column, sum a value</h2>
+      <p>Same operation, eight languages. The pattern is identical: load data → transform → output. No VLOOKUPs, no merged cells, no hidden formulas.</p>
+
+      <div class="lang-card-row">
+        <div class="lang-card">
+          <h3>🐍 Python</h3>
+          <p class="desc">The data science default. pandas + DuckDB + Polars + Arrow. Largest ecosystem.</p>
+          <pre>import pandas as pd
+df = pd.read_csv("sales.csv")
+df.groupby("region").revenue.sum()</pre>
+          <div class="libs"><span class="lib">pandas</span><span class="lib">polars</span><span class="lib">duckdb</span><span class="lib">pyarrow</span></div>
+        </div>
+
+        <div class="lang-card">
+          <h3>🟨 JavaScript / TypeScript</h3>
+          <p class="desc">Full-stack data. DuckDB-WASM runs in the browser. Observable, Arquero, Danfo.js.</p>
+          <pre>import * as duckdb from '@duckdb/duckdb-wasm';
+const db = await duckdb.create();
+await db.registerFileText("sales.csv", text);
+db.query("SELECT region, SUM(revenue)
+          FROM sales GROUP BY region");</pre>
+          <div class="libs"><span class="lib">DuckDB-WASM</span><span class="lib">Arquero</span><span class="lib">Danfo.js</span><span class="lib">Observable</span></div>
+        </div>
+
+        <div class="lang-card">
+          <h3>🔷 C# / .NET</h3>
+          <p class="desc">LINQ shines here. DataFrame via Microsoft.Data.Analysis. Polars has .NET bindings.</p>
+          <pre>using Microsoft.Data.Analysis;
+var df = DataFrame.LoadCsv("sales.csv");
+var result = df.GroupBy("region")
+    .Sum("revenue");</pre>
+          <div class="libs"><span class="lib">Microsoft.Data.Analysis</span><span class="lib">Polars.NET</span><span class="lib">LINQ</span></div>
+        </div>
+
+        <div class="lang-card">
+          <h3>🦀 Rust</h3>
+          <p class="desc">Blazing fast. Polars was built in Rust. DataFusion, Apache Arrow native bindings.</p>
+          <pre>use polars::prelude::*;
+let df = CsvReader::from_path(
+    "sales.csv")?.finish()?;
+let result = df.groupby(["region"])?
+    .agg()?;</pre>
+          <div class="libs"><span class="lib">Polars</span><span class="lib">DataFusion</span><span class="lib">Apache Arrow</span></div>
+        </div>
+
+        <div class="lang-card">
+          <h3>🔵 Go</h3>
+          <p class="desc">Simple, fast, single binary. Gota for DataFrames. DuckDB has Go bindings.</p>
+          <pre>import "github.com/marcboeker/go-duckdb"
+db, _ := sql.Open("duckdb", "")
+db.Exec("CREATE TABLE sales AS
+  SELECT * FROM 'sales.csv'")
+db.Query("SELECT region,
+  SUM(revenue) FROM sales
+  GROUP BY region")</pre>
+          <div class="libs"><span class="lib">go-duckdb</span><span class="lib">Gota</span><span class="lib">dataframe-go</span></div>
+        </div>
+
+        <div class="lang-card">
+          <h3>🟪 PowerShell</h3>
+          <p class="desc">Built into Windows. Great for sysadmins who already live in the terminal.</p>
+          <pre>$data = Import-Csv sales.csv
+$data | Group-Object region |
+  ForEach-Object {
+    [PSCustomObject]@{
+      Region = $_.Name
+      Total = ($_.Group |
+        Measure-Object revenue
+        -Sum).Sum
+    }
+  }</pre>
+          <div class="libs"><span class="lib">Import-Csv</span><span class="lib">Group-Object</span><span class="lib">PowerShell 7+</span></div>
+        </div>
+
+        <div class="lang-card">
+          <h3>📊 R</h3>
+          <p class="desc">The statistics gold standard. Tidyverse makes data pipelines read like sentences.</p>
+          <pre>library(dplyr)
+df &lt;- read_csv("sales.csv")
+df |>
+  group_by(region) |>
+  summarise(
+    total = sum(revenue))</pre>
+          <div class="libs"><span class="lib">tidyverse</span><span class="lib">dplyr</span><span class="lib">readr</span><span class="lib">duckdb</span></div>
+        </div>
+
+        <div class="lang-card">
+          <h3>🗄️ SQL (direct)</h3>
+          <p class="desc">The universal data language. DuckDB CLI reads CSVs directly — no import step.</p>
+          <pre>-- duckdb CLI, one command:
+SELECT region,
+       SUM(revenue) AS total
+FROM 'sales.csv'
+GROUP BY region
+ORDER BY total DESC;</pre>
+          <div class="libs"><span class="lib">DuckDB CLI</span><span class="lib">SQLite</span><span class="lib">ClickHouse</span><span class="lib">PostgreSQL</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lang-section">
+      <h2>The real point</h2>
+      <p>Every example above does the same thing. The language doesn't matter. What matters is the pattern:</p>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:16px;">
+        <div class="lang-card" style="text-align:center;">
+          <div style="font-size:2rem;">📄</div>
+          <p style="margin-top:6px;font-size:0.85rem;color:var(--text-muted);">Data stays in files — CSV, Parquet, JSON, whatever.</p>
+        </div>
+        <div class="lang-card" style="text-align:center;">
+          <div style="font-size:2rem;">⚙️</div>
+          <p style="margin-top:6px;font-size:0.85rem;color:var(--text-muted);">Logic lives in code — pick your language, pick your library.</p>
+        </div>
+        <div class="lang-card" style="text-align:center;">
+          <div style="font-size:2rem;">🔄</div>
+          <p style="margin-top:6px;font-size:0.85rem;color:var(--text-muted);">Version control tracks everything. No more <code>Final_v3_FINAL.xlsx</code>.</p>
+        </div>
+        <div class="lang-card" style="text-align:center;">
+          <div style="font-size:2rem;">🤖</div>
+          <p style="margin-top:6px;font-size:0.85rem;color:var(--text-muted);">Agents work with all of them. The separation is what makes agents effective.</p>
+        </div>
+      </div>
+      <p style="margin-top:20px;">An agent doesn't care if you write Python or Go or Rust. It cares that your data isn't interleaved with formatting, that your logic is explicit, and that every change is tracked. Start with the language you already know.</p>
+    </div>
+
+  </main>
+</body>
+</html>
