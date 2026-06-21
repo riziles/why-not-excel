@@ -1,16 +1,15 @@
 import './styles.css';
 import { ScrollStory } from './scrollytelling.js';
 
-// ===== Visual Panel Content =====
+// ===== Visual Panel Content (desktop fixed panel + mobile inline) =====
 const visualContent = document.getElementById('visual-content');
+const mobileSceneLabel = document.getElementById('mobile-scene-label');
 
 /**
- * Update the sticky visual panel with new HTML content.
- * Applies a fade transition.
+ * Update the sticky visual panel with new HTML content (desktop).
  */
 function setVisual(html) {
   visualContent.classList.remove('active');
-  // Brief delay for exit animation
   requestAnimationFrame(() => {
     requestAnimationFrame(() => {
       visualContent.innerHTML = html;
@@ -19,11 +18,31 @@ function setVisual(html) {
   });
 }
 
+/**
+ * Update the inline visual for a scene (mobile).
+ */
+function setSceneVisual(sceneName, html) {
+  const sceneEl = document.getElementById(`scene-${sceneName}`);
+  if (!sceneEl) return;
+  const visualEl = sceneEl.querySelector('.scene-visual');
+  if (visualEl) {
+    visualEl.innerHTML = html;
+  }
+}
+
+/**
+ * Update both desktop panel and mobile inline visual for a scene.
+ */
+function updateVisuals(sceneName, html) {
+  setVisual(html);
+  setSceneVisual(sceneName, html);
+}
+
 // ===== Scene-specific visual content =====
 
 const sceneVisuals = {
   hero: () => {
-    setVisual(`
+    const html = `
       <div style="text-align:center; padding:40px 0;">
         <div style="font-size:4rem; margin-bottom:16px;">📊</div>
         <p style="font-family:var(--font-sans); font-size:1.1rem; color:var(--text-muted);">
@@ -31,11 +50,12 @@ const sceneVisuals = {
           <strong style="color:var(--accent);">Almost none of them are agents.</strong>
         </p>
       </div>
-    `);
+    `;
+    updateVisuals('hero', html);
   },
 
   era: () => {
-    setVisual(`
+    const html = `
       <div class="label">The agent's view of Excel</div>
       <div class="code-block bad">
         <pre><span class="syntax-cmt"># Agent trying to read an .xlsx file</span>
@@ -48,11 +68,12 @@ sheet = wb[<span class="syntax-str">'Sheet1'</span>]
 <span class="syntax-cmt"># Why does row 47 have "N/A" in a number column?</span></pre>
       </div>
       <div class="caption">Every read requires a parser, a guess, and a prayer.</div>
-    `);
+    `;
+    updateVisuals('era', html);
   },
 
   binary: () => {
-    setVisual(`
+    const html = `
       <div class="label">Plain text → instant access</div>
       <div class="code-block good">
         <pre><span class="syntax-cmt"># Any tool can read this:</span>
@@ -62,14 +83,15 @@ date,region,product_id,units_sold,revenue,cost
       </div>
       <div class="label" style="margin-top:18px;">Binary blob → opaque</div>
       <div class="code-block bad">
-        <pre>PK!ýM^[ÿÿÿÿ...  <span class="syntax-cmt">← .xlsx is a ZIP of XML</span></pre>
+        <pre>PK\u0003\u0004\u0014\u0006\b\b\b!ýM^[ÿÿÿÿ...  <span class="syntax-cmt">← .xlsx is a ZIP of XML</span></pre>
       </div>
       <div class="caption">One is data. The other is a format you fight.</div>
-    `);
+    `;
+    updateVisuals('binary', html);
   },
 
   schema: () => {
-    setVisual(`
+    const html = `
       <div class="label">Excel: hope the types are right</div>
       <div class="code-block bad">
         <pre><span class="syntax-cmt">Column C: mostly numbers, but...</span>
@@ -92,11 +114,12 @@ Row 48: <span class="syntax-str">"approx 50"</span>  <span class="syntax-cmt">�
 );</pre>
       </div>
       <div class="caption">The agent knows the contract before it reads a single row.</div>
-    `);
+    `;
+    updateVisuals('schema', html);
   },
 
   gui: () => {
-    setVisual(`
+    const html = `
       <div class="label">What Excel stores vs. what an agent needs</div>
       <div class="code-block bad">
         <pre><span class="syntax-cmt">// An .xlsx file contains:</span>
@@ -108,11 +131,12 @@ Row 48: <span class="syntax-str">"approx 50"</span>  <span class="syntax-cmt">�
 ☑ ...and somewhere in here: the actual data</pre>
       </div>
       <div class="caption">Presentation and data are interleaved. The agent has to untangle them.</div>
-    `);
+    `;
+    updateVisuals('gui', html);
   },
 
   positional: () => {
-    setVisual(`
+    const html = `
       <div class="label">Excel: coordinates break on change</div>
       <div class="code-block bad">
         <pre><span class="syntax-cmt">// Column D is "Revenue" today</span>
@@ -132,11 +156,12 @@ Row 48: <span class="syntax-str">"approx 50"</span>  <span class="syntax-cmt">�
 <span class="syntax-cmt">// Add a column? Rearrange them? This query still works.</span></pre>
       </div>
       <div class="caption">Named references. The same reason we use variables, not registers.</div>
-    `);
+    `;
+    updateVisuals('positional', html);
   },
 
   stateful: () => {
-    setVisual(`
+    const html = `
       <div class="label">Excel: hidden dependency graph</div>
       <div class="code-block bad">
         <pre>Cell D4: <span class="syntax-op">=</span>B4<span class="syntax-op">*</span>C4
@@ -157,11 +182,12 @@ Cell F4: <span class="syntax-op">=</span>E4<span class="syntax-op">-</span>SUMIF
 <span class="syntax-cmt"># The agent reads top to bottom. Every step is visible.</span></pre>
       </div>
       <div class="caption">Input → transform → output. No hidden state.</div>
-    `);
+    `;
+    updateVisuals('stateful', html);
   },
 
   better: () => {
-    setVisual(`
+    const html = `
       <div class="label">The agent-optimized stack</div>
       <div class="code-block good">
         <pre><span class="syntax-cmt">┌─────────────────────────┐</span>
@@ -176,39 +202,42 @@ Cell F4: <span class="syntax-op">=</span>E4<span class="syntax-op">-</span>SUMIF
 df.to_excel(<span class="syntax-str">'report_for_boss.xlsx'</span>)</pre>
       </div>
       <div class="caption">Keep Excel as an output format, not a working medium.</div>
-    `);
+    `;
+    updateVisuals('better', html);
   },
 
   playground: () => {
-    setVisual(`
+    const html = `
       <div style="text-align:center; padding:30px 0;">
         <div style="font-size:3.5rem; margin-bottom:16px;">🦆</div>
         <p style="font-family:var(--font-sans); font-size:1rem; color:var(--text-muted); margin-bottom:20px;">
           Run SQL queries against live data.<br />DuckDB-WASM — entirely in your browser.
         </p>
-        <a href="./playground.html" class="run-btn pg-nav-btn" style="display:inline-block; text-decoration:none; padding:12px 32px; font-size:1rem;">
+        <a href="./playground.html" class="run-btn" style="display:inline-block; text-decoration:none; padding:12px 32px; font-size:1rem;">
           🦆 Open SQL Playground →
         </a>
       </div>
-    `);
+    `;
+    updateVisuals('playground', html);
   },
 
   pyodide: () => {
-    setVisual(`
+    const html = `
       <div style="text-align:center; padding:30px 0;">
         <div style="font-size:3.5rem; margin-bottom:16px;">🐍</div>
         <p style="font-family:var(--font-sans); font-size:1rem; color:var(--text-muted); margin-bottom:20px;">
           Python 3 + pandas in your browser.<br />Explicit data pipelines, zero hidden state.
         </p>
-        <a href="./python.html" class="run-btn pg-nav-btn" style="display:inline-block; text-decoration:none; padding:12px 32px; font-size:1rem;">
+        <a href="./python.html" class="run-btn" style="display:inline-block; text-decoration:none; padding:12px 32px; font-size:1rem;">
           🐍 Open Python Playground →
         </a>
       </div>
-    `);
+    `;
+    updateVisuals('pyodide', html);
   },
 
   conclusion: () => {
-    setVisual(`
+    const html = `
       <div style="text-align:center; padding:40px 0;">
         <div style="font-size:3rem; margin-bottom:16px;">🔄</div>
         <p style="font-family:var(--font-sans); font-size:1rem; line-height:1.7; color:var(--text-muted);">
@@ -221,38 +250,53 @@ df.to_excel(<span class="syntax-str">'report_for_boss.xlsx'</span>)</pre>
           <a href="https://github.com/riziles/why-not-excel" style="color:var(--blue);" target="_blank" rel="noopener">github.com/riziles/why-not-excel</a>
         </p>
       </div>
-    `);
+    `;
+    updateVisuals('conclusion', html);
   },
+};
+
+// ===== Scene names for mobile label =====
+const sceneLabels = {
+  hero: 'Why Not Excel?',
+  era: 'The Agent Era',
+  binary: 'Binary Black Box',
+  schema: 'Schema by Accident',
+  gui: 'GUI-First Design',
+  positional: 'Positional Fragility',
+  stateful: 'Stateful Computation',
+  better: 'The Better Way',
+  playground: 'DuckDB Playground',
+  pyodide: 'Python Playground',
+  conclusion: 'Conclusion',
 };
 
 // ===== Wire everything up =====
 const story = new ScrollStory();
 
-// Register all scenes with their visual content
 const sceneIds = [
-  'scene-hero',
-  'scene-era',
-  'scene-binary',
-  'scene-schema',
-  'scene-gui',
-  'scene-positional',
-  'scene-stateful',
-  'scene-better',
-  'scene-playground',
-  'scene-pyodide',
-  'scene-conclusion',
+  'scene-hero', 'scene-era', 'scene-binary', 'scene-schema',
+  'scene-gui', 'scene-positional', 'scene-stateful', 'scene-better',
+  'scene-playground', 'scene-pyodide', 'scene-conclusion',
 ];
 
 for (const id of sceneIds) {
   const sceneName = id.replace('scene-', '');
   const visualFn = sceneVisuals[sceneName];
 
-  story.addScene(`scene-${sceneName}`, {
+  story.addScene(id, {
     onEnter: () => {
       if (visualFn) visualFn();
+      // Update mobile scene label
+      if (mobileSceneLabel && sceneLabels[sceneName]) {
+        mobileSceneLabel.textContent = sceneLabels[sceneName];
+        mobileSceneLabel.classList.add('visible');
+      }
     },
-    onProgress: (ratio) => {
-      // Could add parallax or progressive reveal here
+    onExit: () => {
+      // Hide mobile label after a short delay
+      if (mobileSceneLabel) {
+        mobileSceneLabel.classList.remove('visible');
+      }
     },
   });
 }
@@ -260,28 +304,10 @@ for (const id of sceneIds) {
 // Build navigation dots
 story.buildNav();
 
-// Set initial visual (hero)
-setVisual(`
-  <div style="text-align:center; padding:40px 0;">
-    <div style="font-size:4rem; margin-bottom:16px;">📊</div>
-    <p style="font-family:var(--font-sans); font-size:1.1rem; color:var(--text-muted);">
-      750 million people use Excel.<br />
-      <strong style="color:var(--accent);">Almost none of them are agents.</strong>
-    </p>
-    <p style="margin-top:20px; font-size:0.75rem; color:var(--text-muted);">
-      Scroll to begin →
-    </p>
-  </div>
-`);
+// Set initial visuals
+sceneVisuals.hero();
 
 // Activate hero immediately
 document.getElementById('scene-hero')?.classList.add('active');
-
-// ===== Helpers =====
-function escapeHtml(str) {
-  const div = document.createElement('div');
-  div.textContent = str;
-  return div.innerHTML;
-}
 
 console.log('⬡ Why Not Excel — ready. Scroll to explore.');

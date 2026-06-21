@@ -10,8 +10,11 @@
   <!-- Progress bar -->
   <div id="progress-bar"></div>
 
-  <!-- Scene navigation dots -->
+  <!-- Scene navigation dots (desktop) -->
   <nav id="scene-nav" aria-label="Scene navigation"></nav>
+
+  <!-- Mobile scene indicator -->
+  <div id="mobile-scene-label" aria-live="polite"></div>
 
   <!-- Scrollable narrative column -->
   <main id="narrative">
@@ -24,6 +27,7 @@
         <p class="subtitle">Excel was built for humans clicking cells.<br />Agents read, write, and reason about structure.<br />These are fundamentally different modes of work.</p>
         <p class="scroll-hint">Scroll to explore ↓</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 1: The Agent Era -->
@@ -34,6 +38,7 @@
         <p>An agent thrives on <strong>explicit structure</strong>. Excel thrives on <strong>flexible ambiguity</strong>. That gap isn't a minor annoyance — it's a fundamental impedance mismatch that turns your spreadsheet from an asset into a bottleneck.</p>
         <p>Let's walk through exactly <em>why</em>, with code you can run right here in the browser.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 2: Binary Black Box -->
@@ -44,6 +49,7 @@
         <p>A <code>.csv</code> file is plain text. Any tool, any language, any agent can read it directly. No library required. No format reverse-engineering. Just data.</p>
         <p>When your source of truth is plain text, an agent can <em>see</em> the data. When it's binary, the agent is working through a fogged window.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 3: Schema by Accident -->
@@ -53,6 +59,7 @@
         <p>Excel infers types from values. A column is "mostly numbers except row 47 has <code>N/A</code>." The agent has to discover this through trial and error rather than being told: <code>price: number | null</code>.</p>
         <p>In a database or a typed DataFrame, the schema is explicit. The agent knows exactly what it's working with before it runs a single operation. Zero guesswork.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 4: GUI-First Design -->
@@ -62,6 +69,7 @@
         <p>Merged cells. Conditional formatting. Freeze panes. Pivot tables. Named ranges that may or may not exist. All of these encode <em>presentation</em> logic — visual layout for human eyes — interleaved with the actual data.</p>
         <p>An agent has to untangle what's data from what's decoration. In code, data and presentation are separate layers by design. The agent only touches the data layer.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 5: Positional Fragility -->
@@ -71,6 +79,7 @@
         <p><code>=VLOOKUP(A2, Sheet2!B:D, 3, FALSE)</code> breaks the moment someone inserts a column before D. The logic is coupled to <em>coordinates</em>, not <em>names</em>.</p>
         <p>This is the same reason we moved from numbered registers to named variables in programming decades ago. An agent writing <code>JOIN ON product_id</code> doesn't care what column number anything is — the name is the contract.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 6: Stateful Computation -->
@@ -80,6 +89,7 @@
         <p>Excel's reactive model means a formula's dependencies are implicit. Circular references, iterative calc, volatile functions like <code>RAND()</code> — the agent can't statically analyze a workbook. It has to <em>run</em> it.</p>
         <p>A Python script or SQL query makes data flow explicit. Input → transform → output. Every step is visible, named, and composable. An agent can reason about the pipeline without executing it.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 7: The Better Way -->
@@ -95,6 +105,7 @@
         <p>Each layer is independently readable, testable, and composable. An agent can work at any layer without untangling the others.</p>
         <p>The scene on the right is a live DuckDB database running in your browser. Try the queries — they'll keep working when the data changes, because they reference <em>names</em>, not <em>positions</em>.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 8: DuckDB Playground -->
@@ -104,6 +115,7 @@
         <p>This DuckDB instance is running entirely in your browser — no server, no installation. The <code>sales</code> and <code>products</code> tables were loaded from the same CSV files in this repo.</p>
         <p>Click the button to open a dedicated full-screen SQL playground. Try joining tables, filtering by region, or aggregating by category. Then imagine doing the equivalent with VLOOKUPs across sheets.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 9: Pyodide Demo -->
@@ -113,6 +125,7 @@
         <p>Pyodide runs a full Python interpreter — with pandas — in your browser via WebAssembly. The code on the right reads the same CSV, builds a transformation pipeline, and outputs results.</p>
         <p>Notice that every step is <em>explicit</em>: load → filter → group → aggregate → output. An agent can read this top to bottom and understand the entire data flow. No hidden formulas, no cell dependencies to trace.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
     <!-- Scene 10: Conclusion -->
@@ -123,11 +136,12 @@
         <p>The fix isn't to stop using Excel entirely. It's to use it as an <strong>output format</strong> — generate the <code>.xlsx</code> at the end for stakeholders who need it. Keep your source of truth in plain text, your transformations in code, and your visualizations as a separate concern.</p>
         <p class="closing">Your agents will thank you.</p>
       </div>
+      <div class="scene-visual"></div>
     </section>
 
   </main>
 
-  <!-- Fixed visual panel (right side on desktop, stacks below on mobile) -->
+  <!-- Fixed visual panel (right side on desktop, hidden on mobile) -->
   <aside id="visual-panel" aria-label="Code and demo panel">
     <div id="visual-content"></div>
   </aside>

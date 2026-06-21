@@ -317,18 +317,87 @@ body {
   }
 
   .pg-presets button {
-    font-size: 0.75rem;
-    padding: 6px 12px;
+    font-size: 0.78rem;
+    padding: 10px 14px;
+    min-height: 44px;
+    flex: 1 1 auto;
   }
 
   .pg-editor {
     min-height: 140px;
-    font-size: 0.78rem;
+    font-size: 0.8rem;
     padding: 14px;
+  }
+
+  .pg-run-btn {
+    padding: 12px 28px;
+    font-size: 0.9rem;
+    min-height: 44px;
   }
 
   .pg-output {
     max-height: 400px;
     padding: 14px;
+    font-size: 0.75rem;
+  }
+
+  .pg-output table {
+    font-size: 0.72rem;
+  }
+
+  .pg-output th,
+  .pg-output td {
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 400px) {
+  .pg-header {
+    padding: 16px 12px 12px;
+  }
+
+  .pg-brand {
+    gap: 8px;
+  }
+
+  .pg-brand h1 {
+    font-size: 1.15rem;
+  }
+
+  .pg-logo {
+    font-size: 1.5rem;
+  }
+
+  .pg-subtitle {
+    font-size: 0.82rem;
+  }
+
+  .pg-schema {
+    font-size: 0.72rem;
+    gap: 8px;
+  }
+
+  .pg-main {
+    padding: 12px;
+  }
+
+  .pg-presets button {
+    font-size: 0.72rem;
+    padding: 8px 10px;
+    min-height: 40px;
+  }
+
+  .pg-editor {
+    min-height: 120px;
+    font-size: 0.72rem;
+    padding: 12px;
+  }
+
+  .pg-editor-header label {
+    font-size: 0.8rem;
+  }
+
+  .pg-output {
+    padding: 12px;
   }
 }
