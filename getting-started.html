@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Getting Started — Why Not Excel?</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🚀</text></svg>" />
+  <link rel="stylesheet" href="/src/playground.css" />
+  <style>
+    .gs-section {
+      margin-bottom: 36px;
+    }
+    .gs-section h2 {
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .gs-section h3 {
+      font-size: 1.05rem;
+      margin: 20px 0 10px;
+      color: var(--accent);
+    }
+    .gs-section p, .gs-section li {
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    .gs-section ul {
+      padding-left: 20px;
+      margin-bottom: 12px;
+    }
+    .gs-section li {
+      margin-bottom: 6px;
+    }
+    .gs-section code {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 7px;
+      font-family: var(--font-mono);
+      font-size: 0.85em;
+    }
+    .gs-install {
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      margin: 12px 0 20px;
+      font-family: var(--font-mono);
+      font-size: 0.82rem;
+      line-height: 1.7;
+    }
+    .gs-install .cmd {
+      color: var(--green);
+    }
+    .gs-install .cmt {
+      color: var(--text-muted);
+    }
+    .gs-card-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
+      margin: 16px 0;
+    }
+    .gs-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+    }
+    .gs-card h4 {
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+    .gs-card p {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+    .gs-card .tag {
+      display: inline-block;
+      background: var(--bg-code);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 2px 8px;
+      font-size: 0.7rem;
+      color: var(--accent);
+      margin-right: 4px;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <header class="pg-header">
+    <a href="./" class="pg-back">← Back to presentation</a>
+    <div class="pg-brand">
+      <span class="pg-logo">🚀</span>
+      <h1>Getting Started</h1>
+    </div>
+    <p class="pg-subtitle">You're convinced Excel is a bottleneck. Here's how to start working the way agents work — with separated data, explicit code, and version control.</p>
+  </header>
+
+  <main class="pg-main">
+
+    <!-- Agent Harnesses -->
+    <div class="gs-section">
+      <h2>Pick an agent harness</h2>
+      <p>An agent harness is the environment where you give instructions to an AI coding agent. Each has a different philosophy — pick the one that fits how you work.</p>
+
+      <div class="gs-card-row">
+        <div class="gs-card">
+          <h4>🖥️ Claude Code</h4>
+          <p>Anthropic's official terminal agent. Runs in your terminal, reads your codebase, edits files, runs commands. Tightest Claude integration.</p>
+          <span class="tag">Terminal</span><span class="tag">Anthropic</span>
+        </div>
+        <div class="gs-card">
+          <h4>⬡ pi</h4>
+          <p>Open-source coding agent harness. Works with multiple models, runs in terminal. Built for composability and extensibility.</p>
+          <span class="tag">Terminal</span><span class="tag">Open-source</span>
+        </div>
+        <div class="gs-card">
+          <h4>🖱️ Cursor</h4>
+          <p>AI-first IDE built on VS Code. Inline edits, chat, and agent mode. Best for developers who want a GUI with AI deeply integrated.</p>
+          <span class="tag">IDE</span><span class="tag">GUI</span>
+        </div>
+        <div class="gs-card">
+          <h4>🔌 VS Code + extensions</h4>
+          <p>GitHub Copilot, Cline, or Continue. Use the editor you already know, augmented with AI. Most flexible if you have existing VS Code workflows.</p>
+          <span class="tag">IDE</span><span class="tag">Extensions</span>
+        </div>
+        <div class="gs-card">
+          <h4>📟 OpenCode</h4>
+          <p>Open-source terminal agent. Lightweight, scriptable, model-agnostic. Good for teams that want full control over the agent's behavior.</p>
+          <span class="tag">Terminal</span><span class="tag">Open-source</span>
+        </div>
+      </div>
+
+      <p style="margin-top:12px;font-size:0.82rem;color:var(--text-muted);">
+        All of these work by reading your files, writing code, and running commands — exactly the pattern we've been describing. They all benefit from <strong>separated data, explicit logic, and plain-text formats</strong>.
+      </p>
+    </div>
+
+    <!-- Essential Tools -->
+    <div class="gs-section">
+      <h2>Install the essentials</h2>
+      <p>Two tools make the agent workflow possible. Install them once, use them everywhere.</p>
+
+      <h3>git — version control</h3>
+      <p>Every change is a commit with a message. Agents can read the history, revert mistakes, and collaborate without stepping on each other. An <code>.xlsx</code> in a git repo is a binary blob that can't be diffed. A <code>.csv</code> or <code>.py</code> file shows exactly what changed, line by line.</p>
+
+      <div class="gs-install">
+        <span class="cmt"># macOS</span>
+        <br><span class="cmd">brew install git</span>
+        <br><br><span class="cmt"># Windows</span>
+        <br><span class="cmd">winget install --id Git.Git</span>
+        <br><br><span class="cmt"># Linux</span>
+        <br><span class="cmd">sudo apt install git</span>  <span class="cmt"># Debian/Ubuntu</span>
+      </div>
+
+      <h3>uv — Python project manager</h3>
+      <p><code>uv</code> replaces pip, venv, and pip-tools with a single fast tool. It manages Python versions, dependencies, and virtual environments. Agents love it because one command sets up a reproducible environment — no more "it works on my machine."</p>
+
+      <div class="gs-install">
+        <span class="cmt"># macOS / Linux</span>
+        <br><span class="cmd">curl -LsSf https://astral.sh/uv/install.sh | sh</span>
+        <br><br><span class="cmt"># Windows</span>
+        <br><span class="cmd">powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"</span>
+      </div>
+    </div>
+
+    <!-- First Project -->
+    <div class="gs-section">
+      <h2>Your first agent-friendly project</h2>
+      <p>Here's the 60-second version. Open a terminal and follow along:</p>
+
+      <div class="gs-install">
+        <span class="cmt"># 1. Create a project directory</span>
+        <br><span class="cmd">mkdir sales-analysis && cd sales-analysis</span>
+
+        <br><br><span class="cmt"># 2. Initialize git (agents love version history)</span>
+        <br><span class="cmd">git init</span>
+
+        <br><br><span class="cmt"># 3. Initialize a Python project with uv</span>
+        <br><span class="cmd">uv init</span>
+
+        <br><br><span class="cmt"># 4. Add pandas (or polars, or duckdb)</span>
+        <br><span class="cmd">uv add pandas</span>
+
+        <br><br><span class="cmt"># 5. Drop in your CSV (the data layer)</span>
+        <br><span class="cmd">cp ~/Downloads/sales.csv data/</span>
+
+        <br><br><span class="cmt"># 6. Write your analysis (the logic layer)</span>
+        <br><span class="cmd">echo 'import pandas as pd
+        <br>df = pd.read_csv("data/sales.csv")
+        <br>print(df.groupby("region").revenue.sum())
+        <br>' > analysis.py</span>
+
+        <br><br><span class="cmt"># 7. Run it</span>
+        <br><span class="cmd">uv run analysis.py</span>
+
+        <br><br><span class="cmt"># 8. Commit (agents can read the history)</span>
+        <br><span class="cmd">git add -A && git commit -m "Initial analysis"</span>
+      </div>
+
+      <p style="margin-top:12px;font-size:0.82rem;color:var(--text-muted);">
+        That's it. You now have a project an agent can read, understand, and extend. The CSV is data. The Python file is logic. Git is the audit trail. Export an <code>.xlsx</code> at the end if you need to email it to someone — but <strong>the source of truth is this directory</strong>.
+      </p>
+    </div>
+
+    <!-- Recap -->
+    <div class="gs-section">
+      <h2>The pattern, summarized</h2>
+      <div class="gs-card-row" style="grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));">
+        <div class="gs-card" style="text-align:center;">
+          <div style="font-size:2rem;margin-bottom:8px;">📄</div>
+          <h4>Data files</h4>
+          <p>CSV, Parquet, JSON. Values only.</p>
+        </div>
+        <div class="gs-card" style="text-align:center;">
+          <div style="font-size:2rem;margin-bottom:8px;">🐍</div>
+          <h4>Code files</h4>
+          <p>Python, SQL. Explicit transforms.</p>
+        </div>
+        <div class="gs-card" style="text-align:center;">
+          <div style="font-size:2rem;margin-bottom:8px;">🔄</div>
+          <h4>Version control</h4>
+          <p>git. Every change tracked.</p>
+        </div>
+        <div class="gs-card" style="text-align:center;">
+          <div style="font-size:2rem;margin-bottom:8px;">🤖</div>
+          <h4>Agent</h4>
+          <p>Reads, writes, runs, commits.</p>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</body>
+</html>

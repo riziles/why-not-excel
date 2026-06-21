@@ -308,6 +308,10 @@ result.to_parquet(<span class="syntax-str">'out.parquet'</span>) <span class="sy
           <strong style="color:var(--accent);">Output:</strong> .xlsx for humans
         </p>
         <p style="margin-top:24px; font-size:0.8rem; color:var(--text-muted);">
+          <a href="./getting-started.html" class="run-btn" style="display:inline-block; text-decoration:none; padding:10px 28px; font-size:0.9rem; margin-bottom:16px;">
+            🚀 Getting Started →
+          </a>
+          <br />
           Built with DuckDB-WASM · Pyodide · Vite<br />
           <a href="https://github.com/riziles/why-not-excel" style="color:var(--blue);" target="_blank" rel="noopener">github.com/riziles/why-not-excel</a>
         </p>

@@ -10,6 +10,7 @@ export default defineConfig({
         main: resolve(__dirname, 'index.html'),
         playground: resolve(__dirname, 'playground.html'),
         python: resolve(__dirname, 'python.html'),
+        'getting-started': resolve(__dirname, 'getting-started.html'),
       },
     },
   },
