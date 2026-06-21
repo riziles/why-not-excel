@@ -202,18 +202,23 @@ Cell F4: <span class="syntax-op">=</span>E4<span class="syntax-op">-</span>SUMIF
     const html = `
       <div class="label">Three layers, three files, zero entanglement</div>
       <div class="code-block good">
-        <pre><span class="syntax-cmt">┌──────────────────────────┐</span>
-<span class="syntax-cmt">│  Data:  sales.parquet    │</span>  ← Values only. No logic.
-<span class="syntax-cmt">├──────────────────────────┤</span>
-<span class="syntax-cmt">│  Logic: analysis.py      │</span>  ← SQL + pandas. Explicit.
-<span class="syntax-cmt">├──────────────────────────┤</span>
-<span class="syntax-cmt">│  Viz:   dashboard.html   │</span>  ← Rendering. Swap anytime.
-<span class="syntax-cmt">└──────────────────────────┘</span>
-
-<span class="syntax-cmt"># An agent reads data → understands structure</span>
-<span class="syntax-cmt"># An agent reads logic → understands transforms</span>
-<span class="syntax-cmt"># An agent reads viz → understands presentation</span>
-<span class="syntax-cmt"># No untangling required.</span></pre>
+        <ul style="list-style:none;padding:0;margin:0;font-family:var(--font-mono);font-size:0.8rem;">
+          <li style="padding:10px 0;border-bottom:1px solid var(--border);">
+            <strong style="color:var(--accent);">📄 Data</strong> — sales.parquet<br>
+            <span style="color:var(--text-muted);font-size:0.72rem;">Values only. No logic. No formatting.</span>
+          </li>
+          <li style="padding:10px 0;border-bottom:1px solid var(--border);">
+            <strong style="color:var(--accent);">⚙️ Logic</strong> — analysis.py<br>
+            <span style="color:var(--text-muted);font-size:0.72rem;">SQL + pandas. Explicit, testable pipelines.</span>
+          </li>
+          <li style="padding:10px 0;">
+            <strong style="color:var(--accent);">📊 Viz</strong> — dashboard.html<br>
+            <span style="color:var(--text-muted);font-size:0.72rem;">Rendering only. Swap anytime.</span>
+          </li>
+        </ul>
+        <p style="margin-top:12px;font-size:0.75rem;color:var(--text-muted);">
+          An agent reads each layer independently — no untangling required.
+        </p>
       </div>
       <div class="code-block good" style="margin-top:12px;">
         <pre><span class="syntax-cmt"># Bonus: export .xlsx as final step only</span>
