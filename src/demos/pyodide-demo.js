@@ -38,18 +38,19 @@ export async function initPyodide() {
     await pyodide.loadPackage('pandas');
 
     // Fetch CSV files and write them into Pyodide's virtual filesystem
+    // Pass data via Pyodide globals to avoid injection/quoting issues
     const [salesText, productsText] = await Promise.all([
       fetch(assetPath('/data/sales.csv')).then(r => r.text()),
       fetch(assetPath('/data/products.csv')).then(r => r.text()),
     ]);
 
-    // Use Python's IO to write files (avoids Emscripten FS encoding issues)
+    pyodide.globals.set('_sales_csv', salesText);
+    pyodide.globals.set('_products_csv', productsText);
     pyodide.runPython(`
-import io
 with open('/data/sales.csv', 'w') as f:
-    f.write(${JSON.stringify(salesText)})
+    f.write(_sales_csv)
 with open('/data/products.csv', 'w') as f:
-    f.write(${JSON.stringify(productsText)})
+    f.write(_products_csv)
     `);
 
     initialized = true;
