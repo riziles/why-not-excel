@@ -38,13 +38,14 @@ export async function initPyodide() {
     await pyodide.loadPackage('pandas');
 
     // Fetch CSV files and write them into Pyodide's virtual filesystem
+    const encoder = new TextEncoder();
     const [salesText, productsText] = await Promise.all([
       fetch(assetPath('/data/sales.csv')).then(r => r.text()),
       fetch(assetPath('/data/products.csv')).then(r => r.text()),
     ]);
 
-    pyodide.FS.writeFile('/data/sales.csv', salesText);
-    pyodide.FS.writeFile('/data/products.csv', productsText);
+    pyodide.FS.writeFile('/data/sales.csv', encoder.encode(salesText));
+    pyodide.FS.writeFile('/data/products.csv', encoder.encode(productsText));
 
     initialized = true;
     return pyodide;
